@@ -50,13 +50,11 @@ async function validatePasswordOrFail(password: string, userPassword: string) {
 }
 
 async function createGitHub(createGitHubData: CreateOauthData) {
-  const configuration = { expiresIn: 60 * 60 };
-
   const dataToken = await authUtils.loginGitHub(createGitHubData.code);
 
   const userDataGitHub = await authUtils.getUserDataGitHub(
-    dataToken.access_token,
-    dataToken.token_type
+    dataToken.data.access_token,
+    dataToken.data.token_type
   );
 
   const userGitHub = await userRepository.findByGithubId(userDataGitHub.id);

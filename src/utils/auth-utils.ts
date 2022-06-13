@@ -15,7 +15,7 @@ export async function loginGitHub(code: string) {
     "https://github.com/login/oauth/access_token?" + params.toString();
   const promise = await axios.post(URL_CONSTRUCTOR, null, headers);
 
-  return promise.data;
+  return { data: promise.data, params };
 }
 
 export async function getUserDataGitHub(token: string, tokenType: string) {
