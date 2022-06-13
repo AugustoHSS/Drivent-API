@@ -60,6 +60,19 @@ async function createGitHub(createGitHubData: CreateOauthData) {
   const userGitHub = await userRepository.findByGithubId(userDataGitHub.id);
 
   if (!userGitHub) {
+    if (!userDataGitHub.email) {
+      const user = await userRepository.upsertUserGithubData(
+        null,
+        userDataGitHub.id
+      );
+
+      delete user.password;
+
+      const token = await createSession(user.id);
+
+      return { token, user: { id: user.id, email: user?.email } };
+    }
+
     const user = await userRepository.upsertUserGithubData(
       userDataGitHub?.email,
       userDataGitHub.id
