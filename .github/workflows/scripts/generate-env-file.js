@@ -22,7 +22,6 @@ function convertFromObjToEnvString(envObj) {
   const keys = Object.keys(envObj).sort();
   return keys.reduce((envStr, key) => {
     const value = envObj[key];
-
     const row = `${key}="${value.replace(/(\n|\r\n)/g, '\\n')}"`;
     return envStr + row + '\n';
   }, '');
