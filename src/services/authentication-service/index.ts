@@ -61,7 +61,7 @@ async function createGitHub(createGitHubData: CreateOauthData) {
 
   if (!userGitHub) {
     const user = await userRepository.upsertUserGithubData(
-      userDataGitHub.email,
+      userDataGitHub?.email,
       userDataGitHub.id
     );
 
@@ -69,13 +69,13 @@ async function createGitHub(createGitHubData: CreateOauthData) {
 
     const token = await createSession(user.id);
 
-    return { token, user: { id: user.id, email: user.email } };
+    return { token, user: { id: user.id, email: user?.email } };
   }
 
   delete userGitHub.password;
   const token = await createSession(userGitHub.id);
 
-  return { token, user: { id: userGitHub.id, email: userGitHub.email } };
+  return { token, user: { id: userGitHub.id, email: userGitHub?.email } };
 }
 
 export type SignInParams = Pick<User, "email" | "password">;
