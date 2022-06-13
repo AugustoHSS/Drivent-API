@@ -1,4 +1,4 @@
-import { RedisClientType } from '@redis/client';
+import { RedisClientType } from "@redis/client";
 import { createClient } from "redis";
 import dotenv from "dotenv";
 dotenv.config();
@@ -6,7 +6,7 @@ dotenv.config();
 export let redis: RedisClientType;
 export async function connectRedis(): Promise<void> {
   redis = createClient({
-    url: process.env.REDIS_URL,
+    url: "redis://default:92188@drivent-postgres-production-redis:6379",
   });
 
   await redis.connect();
