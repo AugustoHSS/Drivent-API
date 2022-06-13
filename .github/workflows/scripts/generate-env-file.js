@@ -1,5 +1,5 @@
-const fs = require("fs");
-const path = require("path");
+const fs = require('fs');
+const path = require('path');
 
 function generateProductionEnv() {
   const envObj = loadEnvAsObjFromJson();
@@ -9,7 +9,7 @@ function generateProductionEnv() {
 }
 
 function envJsonFilepath() {
-  return path.resolve(__dirname, "./env.json");
+  return path.resolve(__dirname, './env.json');
 }
 
 function loadEnvAsObjFromJson() {
@@ -22,14 +22,13 @@ function convertFromObjToEnvString(envObj) {
   const keys = Object.keys(envObj).sort();
   return keys.reduce((envStr, key) => {
     const value = envObj[key];
-
-    const row = `${key}="${value.replace(/(\n|\r\n)/g, "\\n")}"`;
-    return envStr + row + "\n";
-  }, "");
+    const row = `${key}="${value.replace(/(\n|\r\n)/g, '\\n')}"`;
+    return envStr + row + '\n';
+  }, '');
 }
 
 function saveEnvStrToFile(envStr) {
-  const filepath = path.resolve(process.cwd(), ".env");
+  const filepath = path.resolve(process.cwd(), '.env');
   fs.writeFileSync(filepath, envStr);
 }
 
