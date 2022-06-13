@@ -10,7 +10,7 @@ COPY ./prisma ./prisma
 COPY ./.husky ./
 COPY . .
 
-RUN npm install --force
+RUN npm i
 RUN npx prisma generate
 RUN npm run build
 
