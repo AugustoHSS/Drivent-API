@@ -53,8 +53,8 @@ async function createGitHub(createGitHubData: CreateOauthData) {
   const dataToken = await authUtils.loginGitHub(createGitHubData.code);
 
   const userDataGitHub = await authUtils.getUserDataGitHub(
-    dataToken.data.access_token,
-    dataToken.data.token_type
+    dataToken.access_token,
+    dataToken.token_type
   );
 
   const userGitHub = await userRepository.findByGithubId(userDataGitHub.id);
