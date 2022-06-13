@@ -13,7 +13,7 @@ export async function createUser({
 
   const user = await validateUniqueEmailOrFail(email);
   const hashedPassword = await bcrypt.hash(password, 12);
-  if (user.githubId) {
+  if (user?.githubId) {
     return userRepository.updateUserData({
       email: user.email,
       password: hashedPassword,
