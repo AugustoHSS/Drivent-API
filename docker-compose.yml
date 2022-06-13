@@ -11,7 +11,7 @@ services:
         max-size: "10m"
         max-file: "5"
     working_dir: /usr/src/drivent
-    command: bash -c "npx prisma migrate dev && npx prisma db seed && npm run start"
+    command: bash -c "npx prisma generate && npm run migration:run && npm run start"
     restart: always
     environment:
       NODE_ENV: production
@@ -32,11 +32,6 @@ services:
       POSTGRES_USER: ${POSTGRES_USERNAME}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DATABASE}
-      GH_CLIENT_ID: 5dc43e9cd355e540d896
-      GH_CLIENT_SECRET: 08707e0696e4abee188990119db8d56058b7ad8a
-      REDIS_HOST: ${REDIS_HOST}
-      REDIS_PORT: ${REDIS_PORT}
-      REDIS_PASSWORD: ${REDIS_PASSWORD}
     ports:
       - 5433:${POSTGRES_PORT}
     volumes:
