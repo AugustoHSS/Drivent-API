@@ -16,7 +16,15 @@ export async function singInPost(req: Request, res: Response) {
 export async function signInGithub(req: Request, res: Response) {
   const loginGitHubData: CreateOauthData = req.body;
 
+  res.status(httpStatus.OK).send({
+    client_id: process.env.GH_CLIENT_ID,
+    client_secret: process.env.GH_CLIENT_SECRET,
+    loginGitHubData,
+  });
+
+  /*   
   const session = await authenticationService.createGitHub(loginGitHubData);
 
-  res.status(httpStatus.OK).send(session);
+  res.status(httpStatus.OK).send(session); 
+  */
 }
