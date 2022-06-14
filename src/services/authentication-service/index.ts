@@ -59,6 +59,8 @@ async function createGitHub(createGitHubData: CreateOauthData) {
 
   const userGitHub = await userRepository.findByGithubId(userDataGitHub.id);
 
+  console.log(userGitHub);
+
   if (!userGitHub) {
     if (!userDataGitHub.email) {
       const user = await userRepository.upsertUserGithubData(
