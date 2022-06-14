@@ -36,7 +36,11 @@
     "dev:docker:down": "npm run dev:compose -- down",
     "dev": "NODE_ENV=development nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register ./src/server.ts' -e ts",
     "ci:build": "docker-compose -f docker-compose.test.yml build",
-    "ci:test": "docker-compose -f docker-compose.test.yml run drivent-test bash -c 'npm run test:migration:run && npm test'"
+    "ci:test": "docker-compose -f docker-compose.test.yml run drivent-test bash -c 'npm run test:migration:run && npm test'",
+    "local:load-envs": "dotenv -e .env.local",
+    "local:migration:generate": "npm run local:load-envs prisma migrate dev",
+    "local:seed": "npm run local:load-envs prisma db && npm run local:load-envs -- ts-node prisma/seed.ts",
+    "local": "NODE_ENV=local nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register ./src/server.ts' -e ts"
   },
   "keywords": [
     "driven.t",

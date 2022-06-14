@@ -5,9 +5,12 @@ dotenv.config();
 
 export let redis: RedisClientType;
 export async function connectRedis(): Promise<void> {
-  redis = createClient({
-    url: "redis://default:123456@drivent-postgres-production-redis:6379",
-  });
+    const url =
+    process.env.NODE_ENV === 'development'
+      ? 'redis://default:123456@drivent-postgres-production-redis:6379'
+      : process.env.REDIS_URL
+    
+  redis = createClient({ url });
 
   await redis.connect();
 }
