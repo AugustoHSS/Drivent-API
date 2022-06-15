@@ -11,15 +11,16 @@ datasource db {
 }
 
 model User {
-  id          Int           @id @default(autoincrement())
-  email       String?       @unique @db.VarChar(255)
-  password    String?       @db.VarChar(255)
-  githubId    Int?          @unique
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  Session     Session[]
-  Enrollment  Enrollment[]
-  Reservation Reservation[]
+  id                    Int                     @id @default(autoincrement())
+  email                 String?                 @unique @db.VarChar(255)
+  password              String?                 @db.VarChar(255)
+  githubId              Int?                    @unique
+  createdAt             DateTime                @default(now())
+  updatedAt             DateTime                @updatedAt
+  Session               Session[]
+  Enrollment            Enrollment[]
+  Reservation           Reservation[]
+  ActivitiesReservation ActivitiesReservation[]
 }
 
 model Session {
@@ -109,4 +110,29 @@ model Transaction {
   total            Int
   reservationId    Int
   Reservation      Reservation @relation(fields: [reservationId], references: [id])
+}
+
+model EventPlace {
+  id         Int          @id @default(autoincrement())
+  name       String
+  Activities Activities[]
+}
+
+model Activities {
+  id                    Int                     @id @default(autoincrement())
+  name                  String
+  capacity              Int
+  startTime             DateTime
+  duration              Int
+  eventPlaceId          Int
+  EventPlace            EventPlace              @relation(fields: [eventPlaceId], references: [id])
+  ActivitiesReservation ActivitiesReservation[]
+}
+
+model ActivitiesReservation {
+  id         Int        @id @default(autoincrement())
+  userId     Int
+  activityId Int
+  User       User       @relation(fields: [userId], references: [id])
+  Activities Activities @relation(fields: [activityId], references: [id])
 }
