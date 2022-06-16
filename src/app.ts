@@ -24,7 +24,7 @@ import {
   eventsRouter,
   enrollmentsRouter,
   accommodationRouter,
-  activityRouter
+  activityRouter,
 } from "@/routers";
 
 const app = express();
@@ -48,7 +48,7 @@ app
 export function init(): Promise<Express> {
   connectDb();
   connectRedis();
-  if (process.env.NODE_ENV !== "test") redisSeed();
+  redisSeed();
   return Promise.resolve(app);
 }
 
