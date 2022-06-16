@@ -1,12 +1,12 @@
 import { notFoundError } from "@/errors";
 import accommodationRepository from "@/repositories/accommodation-repository";
 import {
-  ActivitiesReservation
+  ActivityReservation
 } from "@prisma/client";
 
-export type CreateActivityReservation = Omit<ActivitiesReservation, "id">;
+export type CreateActivityReservation = Omit<ActivityReservation, "id">;
 
-async function createOrUpdateBooking(bookingData: BookingData) {
+async function createOrUpdateBooking(bookingData: CreateActivityReservation) {
 
   
 
