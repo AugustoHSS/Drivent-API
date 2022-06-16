@@ -6,10 +6,11 @@ COPY ./package*.json ./
 COPY ./tsconfig*.json ./
 COPY ./prisma ./prisma
 COPY ./.husky ./
-RUN npm install
 COPY . .
+RUN npm install
 RUN npx prisma generate
-RUN npm run build
+RUN npx prisma migrate dev
+RUN npx prisma db seed
 
 # run step
 

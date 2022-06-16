@@ -33,12 +33,16 @@ services:
         max-size: "10m"
         max-file: "5"
     working_dir: /usr/src/drivent
-    command: bash -c "npx prisma migrate dev && npx prisma db seed && npm run start"
+    command: bash -c "npm run build && npm run start"
     restart: always
     environment:
       NODE_ENV: production
       DATABASE_URL: ${DATABASE_URL}
       JWT_SECRET: ${JWT_SECRET}
+      REDIS_HOST: drivent-postgres-production-redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: 123456
+      REDIS_URL: redis://default:123456@drivent-postgres-production-redis:6379
   drivent-nginx:
     image: nginx
     ports:
