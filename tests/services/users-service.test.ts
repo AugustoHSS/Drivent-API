@@ -18,6 +18,7 @@ afterAll(async () => {
 describe("createUser", () => {
   it("should throw duplicatedUserError if there is a user with given email", async () => {
     await createEvent();
+
     const existingUser = await createUserSeed();
 
     try {
