@@ -11,16 +11,16 @@ datasource db {
 }
 
 model User {
-  id                    Int                     @id @default(autoincrement())
-  email                 String?                 @unique @db.VarChar(255)
-  password              String?                 @db.VarChar(255)
-  githubId              Int?                    @unique
-  createdAt             DateTime                @default(now())
-  updatedAt             DateTime                @updatedAt
-  Session               Session[]
-  Enrollment            Enrollment[]
-  Reservation           Reservation[]
-  ActivitiesReservation ActivitiesReservation[]
+  id                  Int                   @id @default(autoincrement())
+  email               String?               @unique @db.VarChar(255)
+  password            String?               @db.VarChar(255)
+  githubId            Int?                  @unique
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  Session             Session[]
+  Enrollment          Enrollment[]
+  Reservation         Reservation[]
+  ActivityReservation ActivityReservation[]
 }
 
 model Session {
@@ -113,26 +113,26 @@ model Transaction {
 }
 
 model EventPlace {
-  id         Int          @id @default(autoincrement())
-  name       String
-  Activities Activities[]
+  id       Int        @id @default(autoincrement())
+  name     String
+  Activity Activity[]
 }
 
-model Activities {
-  id                    Int                     @id @default(autoincrement())
-  name                  String
-  capacity              Int
-  startTime             DateTime
-  duration              Int
-  eventPlaceId          Int
-  EventPlace            EventPlace              @relation(fields: [eventPlaceId], references: [id])
-  ActivitiesReservation ActivitiesReservation[]
+model Activity {
+  id                  Int                   @id @default(autoincrement())
+  name                String
+  capacity            Int
+  startTime           DateTime
+  duration            Int
+  eventPlaceId        Int
+  EventPlace          EventPlace            @relation(fields: [eventPlaceId], references: [id])
+  ActivityReservation ActivityReservation[]
 }
 
-model ActivitiesReservation {
-  id         Int        @id @default(autoincrement())
+model ActivityReservation {
+  id         Int      @id @default(autoincrement())
   userId     Int
   activityId Int
-  User       User       @relation(fields: [userId], references: [id])
-  Activities Activities @relation(fields: [activityId], references: [id])
+  User       User     @relation(fields: [userId], references: [id])
+  Activity   Activity @relation(fields: [activityId], references: [id])
 }
