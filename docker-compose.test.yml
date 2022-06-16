@@ -6,7 +6,7 @@ services:
     environment:
       POSTGRES_USER: ${POSTGRES_USERNAME}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DATABASE}
+      POSTGRES_DATABASE: drivent_test
     ports:
       - 5433:${POSTGRES_PORT}
     volumes:
@@ -16,10 +16,8 @@ services:
     image: redis:6.2-alpine
     container_name: drivent-redis-test
     restart: always
-    environment:
-      REDIS_URL: ${REDIS_URL}
     ports:
-      - 6380:6379
+      - 6380:${REDIS_PORT}
     command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
     volumes:
       - drivent-redis-test-data:/data
@@ -42,6 +40,9 @@ services:
       NODE_ENV: test
       DATABASE_URL: ${DATABASE_URL}
       JWT_SECRET: ${JWT_SECRET}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      REDIS_URL: ${REDIS_URL}
     volumes:
       - ./src:/usr/src/drivent/src
       - ./prisma:/usr/src/drivent/prisma
@@ -53,5 +54,4 @@ services:
     ports:
       - 4000:4000
 volumes:
-  drivent-postgres-data:
   drivent-redis-test-data:
