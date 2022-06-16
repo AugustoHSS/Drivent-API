@@ -18,8 +18,8 @@ services:
     image: redis:6.2-alpine
     restart: always
     ports:
-      - 6380:6379
-    command: redis-server --save 20 1 --loglevel warning --requirepass 123456
+      - 6380:${REDIS_PORT}
+    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
     volumes:
       - drivent-postgres-production-redis-data:/data
   drivent-production:
@@ -39,7 +39,6 @@ services:
       NODE_ENV: production
       DATABASE_URL: ${DATABASE_URL}
       JWT_SECRET: ${JWT_SECRET}
-      REDIS_URL: redis://default:123456@drivent-postgres-production-redis:6379
   drivent-nginx:
     image: nginx
     ports:
