@@ -17,7 +17,7 @@ services:
     container_name: drivent-redis-test
     restart: always
     ports:
-      - 6380:${REDIS_PORT}
+      - 6380:6379
     command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
     volumes:
       - drivent-redis-test-data:/data
@@ -40,9 +40,9 @@ services:
       NODE_ENV: test
       DATABASE_URL: ${DATABASE_URL}
       JWT_SECRET: ${JWT_SECRET}
-      REDIS_PORT: ${REDIS_PORT}
-      REDIS_PASSWORD: ${REDIS_PASSWORD}
-      REDIS_URL: ${REDIS_URL}
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: 123456
+      REDIS_URL: redis://default:123456@drivent-redis-test:6379
     volumes:
       - ./src:/usr/src/drivent/src
       - ./prisma:/usr/src/drivent/prisma
