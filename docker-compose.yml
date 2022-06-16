@@ -27,6 +27,9 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: drivent-back
+    depends_on:
+      - drivent-postgres-production
+      - drivent-postgres-production-redis
     logging:
       driver: "json-file"
       options:
