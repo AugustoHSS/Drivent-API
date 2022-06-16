@@ -39,9 +39,6 @@ services:
       NODE_ENV: production
       DATABASE_URL: ${DATABASE_URL}
       JWT_SECRET: ${JWT_SECRET}
-      REDIS_PORT: 6379
-      REDIS_PASSWORD: 123456
-      REDIS_URL: redis://default:123456@drivent-postgres-production-redis:6379
   drivent-nginx:
     image: nginx
     ports:
