@@ -3,6 +3,8 @@ import "express-async-errors";
 import express, { Express } from "express";
 import cors from "cors";
 import { redisSeed } from "./redis/seed";
+import dotenv from "dotenv";
+dotenv.config();
 
 import {
   loadEnv,
@@ -44,7 +46,7 @@ app
 export function init(): Promise<Express> {
   connectDb();
   connectRedis();
-  redisSeed();
+  if (process.env.NODE_ENV !== "test") redisSeed();
   return Promise.resolve(app);
 }
 
