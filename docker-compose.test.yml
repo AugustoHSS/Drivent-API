@@ -40,6 +40,8 @@ services:
     command: bash -c "npm run test:migration:generate && npm run test:load-envs prisma db seed && npm run test"
     environment:
       NODE_ENV: test
+      DATABASE_URL: ${DATABASE_URL}
+      JWT_SECRET: ${JWT_SECRET}
     volumes:
       - ./src:/usr/src/drivent/src
       - ./prisma:/usr/src/drivent/prisma
