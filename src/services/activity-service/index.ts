@@ -24,8 +24,22 @@ async function createOrUpdateBooking(bookingData: CreateActivityReservation) {
     return 'unbooked';
   }
 
-  //verify time conflict
-  await generateUserCalendar(userId);
+  const userCalendar = await generateUserCalendar(userId);
+  const activityStartTime = dayjs(activity.startTime).unix();
+  const activityEndTime = activityStartTime + activity.duration * 60;
+
+  for (let i = 0; i < userCalendar.length; i + 2) {
+    const userActivityStartTime = userCalendar[i];
+    const userActivityEndTime = userCalendar[i + 1];
+
+    if (
+      activityStartTime === userActivityStartTime ||
+      activityStartTime > userActivityStartTime && activityStartTime <= userActivityEndTime ||
+      activityStartTime > userActivityStartTime && activityEndTime >= userActivityEndTime ||
+      activityStartTime < userActivityStartTime && activityEndTime > userActivityStartTime
+      )
+      throw conflictError("activities time conflict");
+  }
 
   await activityRepository.book(userId, activityId);
   return 'booked';
@@ -33,23 +47,20 @@ async function createOrUpdateBooking(bookingData: CreateActivityReservation) {
 
 async function generateUserCalendar(userId: number) {
   const userReservations = await activityRepository.getUserReservations(userId);
-  let userCalendar: any = {};
 
-  const dayTime = [];
-  for (let i = 0; i < 30; i++)
-    dayTime.push(null)
-
+  const notAvailableTimes = [];
   for (const reserve of userReservations) {
-    userCalendar[dayjs(reserve.Activity.startTime).format('DD/MM/YYYY')] = dayTime;
+    const startTime = dayjs(reserve.Activity.startTime).unix();
+    const endTime = startTime + reserve.Activity.duration * 60;
+    notAvailableTimes.push(startTime, endTime);
   }
 
-  console.log(userCalendar);
-  
+  return notAvailableTimes;  
 }
 
 const activityService = {
   createOrUpdateBooking,
-  generateUserCalendar
+  generateUserCalendar,
 };
 
 export default activityService;

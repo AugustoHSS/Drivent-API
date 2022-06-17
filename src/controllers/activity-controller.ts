@@ -7,12 +7,10 @@ import httpStatus from 'http-status';
 export async function createOrUpdateBooking(req: AuthenticatedRequest, res: Response) {
   const { activityId } = req.params;
 
-  // const bookType = await activityService.createOrUpdateBooking({
-  //   activityId: Number(activityId),
-  //   userId: req.userId,
-  // });
+  const bookType = await activityService.createOrUpdateBooking({
+    activityId: Number(activityId),
+    userId: req.userId,
+  });
 
-  await activityService.generateUserCalendar(req.userId);
-
-  res.status(httpStatus.OK).send('bookType');
+  res.status(httpStatus.OK).send(bookType);
 }
