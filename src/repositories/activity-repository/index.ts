@@ -6,7 +6,16 @@ async function find(activityId: number) {
     include: {
       EventPlace: true,
       ActivityReservation: true,
-    }
+    },
+  });
+}
+
+async function findAllActivities() {
+  return await prisma.activity.findMany({
+    include: {
+      EventPlace: true,
+      ActivityReservation: true,
+    },
   });
 }
 
@@ -14,7 +23,7 @@ async function getUserReservations(userId: number, activityId?: number) {
   return await prisma.activityReservation.findMany({
     where: {
       userId,
-      activityId
+      activityId,
     },
     include: {
       Activity: true,
@@ -39,6 +48,7 @@ const activityRepository = {
   getUserReservations,
   book,
   unbook,
+  findAllActivities,
 };
 
 export default activityRepository;
