@@ -13,6 +13,7 @@ export async function connectRedis(): Promise<void> {
       : "redis://default:123456@drivent-postgres-production-redis:6379";
 
   redis = createClient({ url });
+  console.log("Entrei!");
 
   await redis.connect();
 }
