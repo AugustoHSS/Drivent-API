@@ -91,6 +91,47 @@ async function main() {
       index = 0;
     }
   }
+
+  let eventPlaces = await prisma.eventPlace.findMany();
+  if (!eventPlaces.length) {
+    eventPlaces = [
+      { id: 1, name: "Auditório Principal" },
+      { id: 2, name: "Auditório Lateral" },
+      { id: 3, name: "Sala de Workshop" },
+    ];
+
+    await prisma.eventPlace.createMany({
+      data: eventPlaces,
+    });
+    
+    eventPlaces = await prisma.eventPlace.findMany();
+  }
+
+  let activities = await prisma.activity.findMany();
+  if (!activities.length) {
+      activities = [
+        { id: 1, name: "Minecraft: montando o PC ideal", capacity: 27, startTime: new Date("2022-10-22 09:00"), duration: 60, eventPlaceId: 1},
+        { id: 2, name: "LoL: montando o PC ideal", capacity: 0, startTime: new Date("2022-10-22 10:00"), duration: 60, eventPlaceId: 1},
+        { id: 3, name: "Palestra x", capacity: 27, startTime: new Date("2022-10-22 09:00"), duration: 120, eventPlaceId: 2},
+        { id: 4, name: "Palestra y", capacity: 27, startTime: new Date("2022-10-22 09:00"), duration: 60, eventPlaceId: 3},
+        { id: 5, name: "Palestra z", capacity: 0, startTime: new Date("2022-10-22 10:00"), duration: 60, eventPlaceId: 3 },
+        { id: 6, name: "Palestra do Rui", capacity: 5000, startTime: new Date("2022-10-23 09:00"), duration: 180, eventPlaceId: 1},
+        { id: 7, name: "Palestra do Augusto", capacity: 100, startTime: new Date("2022-10-23 09:00"), duration: 60, eventPlaceId: 2},
+        { id: 8, name: "Palestra do Ventura", capacity: 100, startTime: new Date("2022-10-23 10:00"), duration: 60, eventPlaceId: 2},
+        { id: 9, name: "Palestra do Vitor", capacity: 100, startTime: new Date("2022-10-23 11:00"), duration: 60, eventPlaceId: 2},
+        { id: 10, name: "Dina falando bananinha por 2 horas", capacity: 42, startTime: new Date("2022-10-23 14:00"), duration: 120, eventPlaceId: 3 },
+        { id: 11, name: "Pirulito Pop e seus dilemas", capacity: 990, startTime: new Date("2022-10-24 15:00"), duration: 120, eventPlaceId: 1},
+        { id: 12, name: "Como fazer um deploy sem se estressar", capacity: 0, startTime: new Date("2022-10-24 09:00"), duration: 120, eventPlaceId: 2},
+        { id: 13, name: "As tranças dos carecas: O filme", capacity: 14, startTime: new Date("2022-10-24 09:00"), duration: 180, eventPlaceId: 3},
+      ];
+
+      await prisma.activity.createMany({
+        data: activities,
+      });
+    
+    activities = await prisma.activity.findMany();
+  }
+
 }
 
 main()
