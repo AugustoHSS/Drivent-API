@@ -1,10 +1,13 @@
-import { Request, Response } from 'express';
+import { Request, Response } from "express";
 import { AuthenticatedRequest } from "@/middlewares";
-import activityService from '@/services/activity-service';
+import activityService from "@/services/activity-service";
 
-import httpStatus from 'http-status';
+import httpStatus from "http-status";
 
-export async function createOrUpdateBooking(req: AuthenticatedRequest, res: Response) {
+export async function createOrUpdateBooking(
+  req: AuthenticatedRequest,
+  res: Response
+) {
   const { activityId } = req.params;
 
   const bookType = await activityService.createOrUpdateBooking({
@@ -13,4 +16,13 @@ export async function createOrUpdateBooking(req: AuthenticatedRequest, res: Resp
   });
 
   res.status(httpStatus.OK).send(bookType);
+}
+
+export async function getAllActivities(
+  _req: AuthenticatedRequest,
+  res: Response
+) {
+  const activities = await activityService.getAllActivities();
+
+  res.status(httpStatus.OK).send(activities);
 }
