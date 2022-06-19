@@ -9,6 +9,8 @@ COPY ./.husky ./
 RUN npm install
 COPY . .
 RUN npx prisma generate
+RUN npx prisma migrate dev
+RUN npx prisma db seed
 RUN npm run build
 
 # run step
