@@ -29,7 +29,7 @@ services:
       dockerfile: Dockerfile
     container_name: drivent-back
     depends_on:
-      - drivent-postgres-test
+      - drivent-postgres-production
       - drivent-redis-production
     logging:
       driver: "json-file"
