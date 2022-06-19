@@ -20,6 +20,9 @@ jobs:
         env:
           SECRETS: ${{ toJson(secrets) }}
 
+      - name: Down
+        run: docker-compose down
+
       - name: Containers Delete
         run: docker rm -vf $(docker ps -aq)
 
