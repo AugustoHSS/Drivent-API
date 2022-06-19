@@ -21,7 +21,10 @@ jobs:
           SECRETS: ${{ toJson(secrets) }}
 
       - name: Container Prune
-        run: docker container prune --y
+        run: docker container prune --force
+
+      - name: Image Prune
+        run: docker image prune --force
 
       - name: Build
         run: docker-compose build
