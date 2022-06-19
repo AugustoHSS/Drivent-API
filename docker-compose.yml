@@ -1,8 +1,26 @@
 version: "3"
 services:
+  drivent-production:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: drivent-back
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+    working_dir: /usr/src/drivent
+    command: bash -c "npx prisma generate && npm run migration:run && npm run start"
+    restart: always
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: ${DATABASE_URL}
+      JWT_SECRET: ${JWT_SECRET}
   drivent-postgres-production:
-    image: postgres:13-alpine
     container_name: drivent-postgres-production
+    image: postgres:13-alpine
+    restart: always
     environment:
       POSTGRES_USER: ${POSTGRES_USERNAME}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -19,30 +37,10 @@ services:
     image: redis:6.2-alpine
     restart: always
     ports:
-      - 6380:6379
-    command: redis-server --save 20 1 --loglevel warning --requirepass 123456
+      - 6380:${REDIS_PORT}
+    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
     volumes:
       - drivent-redis-production-data:/data
-  drivent-production:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: drivent-back
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "5"
-    working_dir: /usr/src/drivent
-    command: bash -c "npx prisma migrate dev && npx prisma db seed && npm run start"
-    restart: always
-    environment:
-      NODE_ENV: production
-      DATABASE_URL: ${DATABASE_URL}
-      JWT_SECRET: ${JWT_SECRET}
-      REDIS_PORT: 6379
-      REDIS_PASSWORD: 123456
-      REDIS_URL: redis://default:123456@drivent-redis-production:6379
   drivent-nginx:
     image: nginx
     ports:
