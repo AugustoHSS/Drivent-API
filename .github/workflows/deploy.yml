@@ -20,6 +20,15 @@ jobs:
         env:
           SECRETS: ${{ toJson(secrets) }}
 
+      - name: Container Prune
+        run: docker container prune --force
+
+      - name: Image Prune
+        run: docker image prune --force
+
+      - name: System Prune
+        run: docker system prune --force
+
       - name: Build
         run: docker-compose build
 
