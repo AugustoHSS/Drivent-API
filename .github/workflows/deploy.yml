@@ -26,6 +26,9 @@ jobs:
       - name: Image Prune
         run: docker image prune --force
 
+      - name: System Prune
+        run: docker system prune --force
+
       - name: Build
         run: docker-compose build
 
