@@ -24,7 +24,7 @@ jobs:
         run: docker-compose down --remove-orphans
 
       - name: Build
-        run: docker-compose -- up --build --force-rm --no-cache
+        run: docker-compose build
 
       - name: Run
         run: docker-compose down && docker-compose up -d
