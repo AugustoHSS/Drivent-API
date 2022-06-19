@@ -1,27 +1,29 @@
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
+import "dayjs/locale/pt-br";
 import { conflictError, notFoundError } from "@/errors";
 import activityRepository from "@/repositories/activity-repository";
-import {
-  ActivityReservation
-} from "@prisma/client";
+import { ActivityReservation } from "@prisma/client";
 
 export type CreateActivityReservation = Omit<ActivityReservation, "id">;
 
-async function createOrUpdateBooking(bookingData: CreateActivityReservation) { 
+async function createOrUpdateBooking(bookingData: CreateActivityReservation) {
   const { userId, activityId } = bookingData;
 
   if (isNaN(activityId)) throw conflictError("activity id must be a number");
-  
+
   const activity = await activityRepository.find(activityId);
   if (!activity) throw notFoundError();
 
   if (activity.ActivityReservation.length >= activity.capacity)
     throw conflictError("this activity is not available");
 
-  const existingReservation = await activityRepository.getUserReservations(userId, activityId);  
+  const existingReservation = await activityRepository.getUserReservations(
+    userId,
+    activityId
+  );
   if (existingReservation.length > 0) {
     await activityRepository.unbook(userId, activityId);
-    return 'unbooked';
+    return "unbooked";
   }
 
   const userCalendar = await generateUserCalendar(userId);
@@ -34,15 +36,42 @@ async function createOrUpdateBooking(bookingData: CreateActivityReservation) {
 
     if (
       activityStartTime === userActivityStartTime ||
-      activityStartTime > userActivityStartTime && activityStartTime <= userActivityEndTime ||
-      activityStartTime > userActivityStartTime && activityEndTime >= userActivityEndTime ||
-      activityStartTime < userActivityStartTime && activityEndTime > userActivityStartTime
-      )
+      (activityStartTime > userActivityStartTime &&
+        activityStartTime <= userActivityEndTime) ||
+      (activityStartTime > userActivityStartTime &&
+        activityEndTime >= userActivityEndTime) ||
+      (activityStartTime < userActivityStartTime &&
+        activityEndTime > userActivityStartTime)
+    )
       throw conflictError("activities time conflict");
   }
 
   await activityRepository.book(userId, activityId);
-  return 'booked';
+  return "booked";
+}
+
+async function getAllActivities() {
+  const activities = await activityRepository.findAllActivities();
+
+  const hashtable: any = {};
+
+  for (let i = 0; i < activities.length; i++) {
+    const activity = activities[i];
+    const activityDateFormat = dayjs(activity.startTime)
+      .locale("pt-br")
+      .format("dddd, DD/MM");
+    const activityDate =
+      activityDateFormat.charAt(0).toUpperCase() +
+      activityDateFormat.slice(1).replace("-feira", "");
+
+    if (!hashtable[activityDate]) {
+      hashtable[activityDate] = [activity];
+    } else {
+      hashtable[activityDate].push(activity);
+    }
+  }
+
+  return hashtable;
 }
 
 async function generateUserCalendar(userId: number) {
@@ -55,11 +84,12 @@ async function generateUserCalendar(userId: number) {
     notAvailableTimes.push(startTime, endTime);
   }
 
-  return notAvailableTimes;  
+  return notAvailableTimes;
 }
 
 const activityService = {
   createOrUpdateBooking,
+  getAllActivities,
   generateUserCalendar,
 };
 

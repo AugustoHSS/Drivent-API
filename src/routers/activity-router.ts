@@ -1,14 +1,12 @@
 import { Router } from "express";
-import { authenticateToken, validateBody } from "@/middlewares";
-import {
-  createOrUpdateBooking,
-} from "@/controllers";
-import { createBookingSchema } from "@/schemas";
+import { authenticateToken } from "@/middlewares";
+import { createOrUpdateBooking, getAllActivities } from "@/controllers";
 
 const activityRouter = Router();
 
 activityRouter
   .all("/*", authenticateToken)
-  .patch("/:activityId", createOrUpdateBooking)
+  .get("/", getAllActivities)
+  .patch("/:activityId", createOrUpdateBooking);
 
 export { activityRouter };
