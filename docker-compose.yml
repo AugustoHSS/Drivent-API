@@ -15,15 +15,15 @@ services:
     volumes:
       - /usr/local/drivent-pg/data:/var/lib/postgresql/data
     command: postgres -p ${POSTGRES_PORT}
-  drivent-postgres-production-redis:
-    container_name: drivent-postgres-production-redis
+  drivent-redis-production:
+    container_name: drivent-redis-production
     image: redis:6.2-alpine
     restart: always
     ports:
       - 6380:${REDIS_PORT}
     command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
     volumes:
-      - drivent-postgres-production-redis-data:/data
+      - drivent-redis-production-data:/data
   drivent-production:
     build:
       context: .
@@ -50,4 +50,4 @@ services:
       - ./nginx:/etc/nginx/conf.d
       - /usr/src/drivent/front-end:/var/www/html
 volumes:
-  drivent-postgres-production-redis-data:
+  drivent-redis-production-data:
