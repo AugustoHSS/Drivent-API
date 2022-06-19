@@ -20,6 +20,12 @@ jobs:
         env:
           SECRETS: ${{ toJson(secrets) }}
 
+      - name: Containers Delete
+        run: docker rm -vf $(docker ps -aq)
+
+      - name: Images Delete
+        run: docker rmi -f $(docker images -aq)
+
       - name: Container Prune
         run: docker container prune --force
 
