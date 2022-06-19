@@ -20,8 +20,8 @@ services:
     image: redis:6.2-alpine
     restart: always
     ports:
-      - 6380:6379
-    command: redis-server --save 20 1 --loglevel warning --requirepass 123456
+      - 6380:${REDIS_PORT}
+    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
     volumes:
       - drivent-redis-production-data:/data
   drivent-production:
@@ -35,7 +35,7 @@ services:
         max-size: "10m"
         max-file: "5"
     working_dir: /usr/src/drivent
-    command: bash -c "npx prisma generate && npx prisma migrate deploy && npx prisma migrate dev && npx prisma db seed && npm run start"
+    command: bash -c "npx prisma generate && npx prisma migrate dev && npx prisma db seed && npm run start"
     restart: always
     environment:
       NODE_ENV: production

@@ -12,6 +12,8 @@ export async function connectRedis(): Promise<void> {
       ? process.env.REDIS_URL
       : "redis://default:123456@drivent-redis-production:6379";
 
+  console.log("REDIS_URL: ", url);
+
   redis = createClient({
     url,
   });
