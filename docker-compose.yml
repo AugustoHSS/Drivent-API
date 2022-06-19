@@ -2,6 +2,7 @@ version: "3"
 services:
   drivent-postgres-production:
     image: postgres:13-alpine
+    container_name: drivent-postgres-production
     environment:
       POSTGRES_USER: ${POSTGRES_USERNAME}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -9,7 +10,7 @@ services:
       GH_CLIENT_ID: ${GH_CLIENT_ID}
       GH_CLIENT_SECRET: ${GH_CLIENT_SECRET}
     ports:
-      - 5433:${POSTGRES_PORT}
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
     volumes:
       - /usr/local/drivent-pg/data:/var/lib/postgresql/data
     command: postgres -p ${POSTGRES_PORT}
@@ -27,6 +28,9 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: drivent-back
+    depends_on:
+      - drivent-postgres-test
+      - drivent-redis-production
     logging:
       driver: "json-file"
       options:
