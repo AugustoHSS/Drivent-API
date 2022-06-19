@@ -10,7 +10,7 @@ export async function connectRedis(): Promise<void> {
     process.env.NODE_ENV === "test" ||
     process.env.NODE_ENV === "local"
       ? process.env.REDIS_URL
-      : "redis://default:123456@drivent-postgres-production-redis:6380";
+      : "redis://default:123456@drivent-redis-production:6380";
 
   redis = createClient({ url });
 
