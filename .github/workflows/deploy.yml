@@ -20,8 +20,11 @@ jobs:
         env:
           SECRETS: ${{ toJson(secrets) }}
 
+      - name: Down
+        run: docker-compose down --remove-orphans
+
       - name: Build
-        run: docker-compose build
+        run: docker-compose -- up --build --force-rm --no-cache
 
       - name: Run
         run: docker-compose down && docker-compose up -d
