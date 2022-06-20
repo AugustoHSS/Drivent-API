@@ -114,7 +114,7 @@ async function main() {
         { id: 2, name: "LoL: montando o PC ideal", capacity: 0, startTime: new Date("2022-10-22 10:00"), duration: 60, eventPlaceId: 1},
         { id: 3, name: "Palestra x", capacity: 27, startTime: new Date("2022-10-22 09:00"), duration: 120, eventPlaceId: 2},
         { id: 4, name: "Palestra y", capacity: 27, startTime: new Date("2022-10-22 09:00"), duration: 60, eventPlaceId: 3},
-        { id: 5, name: "Palestra z", capacity: 0, startTime: new Date("2022-10-22 10:00"), duration: 60, eventPlaceId: 3 },
+        { id: 5, name: "Palestra z", capacity: 1, startTime: new Date("2022-10-22 10:00"), duration: 60, eventPlaceId: 3 },
         { id: 6, name: "Palestra do Rui", capacity: 5000, startTime: new Date("2022-10-23 09:00"), duration: 180, eventPlaceId: 1},
         { id: 7, name: "Palestra do Augusto", capacity: 100, startTime: new Date("2022-10-23 09:00"), duration: 60, eventPlaceId: 2},
         { id: 8, name: "Palestra do Ventura", capacity: 100, startTime: new Date("2022-10-23 10:00"), duration: 60, eventPlaceId: 2},
