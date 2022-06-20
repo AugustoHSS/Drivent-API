@@ -111,6 +111,7 @@ async function getReservationById(userId: number) {
 
 async function updateReservationByUserId(roomId: number, userId: number) {
 
+
   await accommodationRepository.updateReservationByUserId(roomId, userId);
 }
 

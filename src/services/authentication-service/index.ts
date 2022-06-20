@@ -90,6 +90,11 @@ async function createGitHub(createGitHubData: CreateOauthData) {
   return { token, user: { id: userGitHub.id, email: userGitHub?.email } };
 }
 
+async function logOut(userId: number) {
+  await sessionRepository.deleteSessions(userId);
+
+}
+
 export type SignInParams = Pick<User, "email" | "password">;
 
 type SignInResult = {
@@ -102,6 +107,7 @@ type GetUserOrFailResult = Pick<User, "id" | "email" | "password">;
 const authenticationService = {
   signIn,
   createGitHub,
+  logOut
 };
 
 export default authenticationService;
