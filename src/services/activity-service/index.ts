@@ -3,7 +3,6 @@ import "dayjs/locale/pt-br";
 import { conflictError, notFoundError } from "@/errors";
 import activityRepository from "@/repositories/activity-repository";
 import { ActivityReservation } from "@prisma/client";
-import { RESERVED_NUMBERS } from "@brazilian-utils/brazilian-utils/dist/utilities/pis";
 
 export type CreateActivityReservation = Omit<ActivityReservation, "id">;
 
