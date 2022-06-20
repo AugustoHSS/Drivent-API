@@ -9,7 +9,7 @@ export async function createOrUpdateBooking(
   res: Response
 ) {
   const { activityId } = req.params;
-
+  
   const bookType = await activityService.createOrUpdateBooking({
     activityId: Number(activityId),
     userId: req.userId,

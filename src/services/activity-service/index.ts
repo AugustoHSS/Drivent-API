@@ -14,7 +14,18 @@ async function createOrUpdateBooking(bookingData: CreateActivityReservation) {
   const activity = await activityRepository.find(activityId);
   if (!activity) throw notFoundError();
 
-  if (activity.ActivityReservation.length >= activity.capacity)
+  let isUserInActivity = false;
+  if (activity.ActivityReservation.length > 0) {
+    for (let i = 0; i < activity.ActivityReservation.length; i++) {
+      const reserve = activity.ActivityReservation[i];
+      if (reserve.userId === userId) {
+        isUserInActivity = true;
+        break;
+      }
+    }
+  }
+
+  if (activity.ActivityReservation.length >= activity.capacity && !isUserInActivity)
     throw conflictError("this activity is not available");
 
   const existingReservation = await activityRepository.getUserReservations(
@@ -30,20 +41,19 @@ async function createOrUpdateBooking(bookingData: CreateActivityReservation) {
   const activityStartTime = dayjs(activity.startTime).unix();
   const activityEndTime = activityStartTime + activity.duration * 60;
 
-  for (let i = 0; i < userCalendar.length; i + 2) {
+  for (let i = 0; i < userCalendar.length; i++) {
     const userActivityStartTime = userCalendar[i];
     const userActivityEndTime = userCalendar[i + 1];
 
+    if (i % 2 !== 0) continue;
+
     if (
-      activityStartTime === userActivityStartTime ||
-      (activityStartTime > userActivityStartTime &&
-        activityStartTime <= userActivityEndTime) ||
-      (activityStartTime > userActivityStartTime &&
-        activityEndTime >= userActivityEndTime) ||
-      (activityStartTime < userActivityStartTime &&
-        activityEndTime > userActivityStartTime)
-    )
+      (activityStartTime === userActivityStartTime) ||
+      (activityStartTime > userActivityStartTime && activityStartTime < userActivityEndTime) ||
+      (activityStartTime < userActivityStartTime && activityEndTime > userActivityStartTime)
+      ) 
       throw conflictError("activities time conflict");
+    
   }
 
   await activityRepository.book(userId, activityId);
