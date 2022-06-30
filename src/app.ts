@@ -34,6 +34,7 @@ app
 
     res.send({ ok: true });
   })
+
   .get("/health", (_req, res) => res.send("OK!"))
   .use("/users", usersRouter)
   .use("/auth", authenticationRouter)
